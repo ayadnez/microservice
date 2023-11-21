@@ -1,18 +1,15 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
+	"flag"
 )
 
 func main() {
-
-	svc := NewloggingService(&priceFetcher{})
-	price, err := svc.FetchPrice(context.Background(), "ETH")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(price)
+	listenAddr := flag.String("listenaddr", ":3000", "listen address the service is running")
+	flag.Parse()
+	svc := NewloggingService(NewmetricsService(&priceFetcher{}))
+	sever := NewJSONAPISever(*listenAddr, svc)
+	//price, err := svc.FetchPrice(context.Background(), "ETH")
+	sever.Run()
 
 }
