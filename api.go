@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"math/rand"
 	"net/http"
+
+	"go-microservice/types"
 )
 
 type APIfunc func(context.Context, http.ResponseWriter, *http.Request) error
@@ -12,10 +14,6 @@ type APIfunc func(context.Context, http.ResponseWriter, *http.Request) error
 type JSONAPIServer struct {
 	listenAddr string
 	svc        PriceFetcher
-}
-type PriceResponse struct {
-	Ticker string  `json:"ticker"`
-	Price  float64 `json:"price"`
 }
 
 func NewJSONAPISever(listenAddr string, svc PriceFetcher) *JSONAPIServer {
@@ -47,7 +45,7 @@ func (s *JSONAPIServer) handleFetchPrice(ctx context.Context, w http.ResponseWri
 		return err
 	}
 
-	priceResp := PriceResponse{
+	priceResp := types.PriceResponse{
 		Ticker: ticker,
 		Price:  price,
 	}

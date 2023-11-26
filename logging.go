@@ -26,5 +26,7 @@ func (s *loggingService) FetchPrice(ctx context.Context, ticker string) (price f
 			"price":     price,
 		}).Info("fetchPrice")
 	}(time.Now())
+
 	return s.next.FetchPrice(ctx, ticker)
+
 }
